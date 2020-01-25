@@ -13,7 +13,7 @@ import java.io.IOException;
 //public class CORSAllow {
 //}
 
-//@Component
+@Component
 public class CORSAllow extends OncePerRequestFilter {
 
     @Override

@@ -7,10 +7,12 @@ import com.absonworld.mySpringBootRestApp.entity.User;
 import com.absonworld.mySpringBootRestApp.service.H2JDBCService;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -88,12 +90,35 @@ public class UserController {
         return service.getTransactionDetails(cid);
     }
 
-    @PostMapping(path = "/updatePassword", consumes = "application/json", produces = "application/json")
-    public User updatePassword(@RequestBody User user) {
+    public User updatePasswordSimple(@RequestBody User user) {
         System.out.println("UserName is " + user.getCid());
         int count = service.updatePassword(user.getCid(), user.getPassword());
         if (count > 0) {
             return user;
+        }
+        return null;
+
+    }
+
+    @PostMapping(path = "/updatePassword", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String updatePassword(@RequestBody String user) {
+        User userDetails= new User();
+        System.out.println("UserName is " + user);
+        StringTokenizer st = new StringTokenizer(user,"&");
+        int ccid=0;
+        String ppwd="";
+        while(st.hasMoreTokens()){
+            //userDetails.setCid
+                    String cid=(st.nextToken());
+                     ccid= Integer.parseInt(cid.substring(cid.indexOf("=")+1,cid.length()));
+            String pwd=(st.nextToken());
+             ppwd= (pwd.substring(cid.indexOf("=")+1,pwd.length()));
+
+        }
+
+        int count = service.updatePassword(ccid, ppwd);
+        if (count > 0) {
+            return userDetails.toString();
         }
         return null;
 
@@ -112,7 +137,7 @@ public class UserController {
 
     }
 
-    @PostMapping(path = "/donate", consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/donate", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public AccountDetails donate(@RequestBody Transactions donationDetail) throws InterruptedException {
         System.out.println("UserName is " + donationDetail.getCid());
 

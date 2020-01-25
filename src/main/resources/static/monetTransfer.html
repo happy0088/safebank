@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ABS Sample Rest Call App</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <link href="navBar_style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div class="topnav">
+    <a href="Homepage.html">Home</a>
+    <a href="updatePassword.html">Update Password</a>
+    <a class="active" href="#monetTransfer.html">Transfer</a>
+    <a href="addPayee.html">Add Payee</a>
+    <a href="transferHistory.html">Transfer History</a>
+    <a href="donate.html">Donate</a>
+  </div>
+
+  <h1>
+    Welcome Mr.
+    <label id="loggedInUser"></label> to Dummy Bank
+    <p>
+      Your current balance is
+      <label id="accountBalance"></label> Rs.
+    </p>
+
+  </h1>
+  <div id='root'>
+
+    <b>Transfer Money</b>
+   
+    <p>
+      <div>
+      <label for="amount">
+        <b>Amount</b>
+      </label>
+      <input type="text" placeholder="Enter Amount" name="amount" id="amount">
+    </div>
+
+      <div id="payeeList">
+        <label for="psw">
+          <b>Account Number: </b>
+        </label>
+        <!-- <input type="text" placeholder="Enter Account Number" name="account" id="account"> -->
+
+      </div>
+
+
+  </div>
+
+  <br>
+  <button type="submit" class="Login" onclick="transferAmount();">Transfer</button>
+  </p>
+
+</body>
+
+<script src="fetchUserDetails.js"></script>
+<script src="fetchCookie.js"></script>
+<script src="moneyTransfer.js"></script>
+<script>
+
+  window.onload = function () {
+    //alert("Homepage loaded");
+    fetchPayee();
+  }
+
+  //alert(localStorage.getItem("loggedInUser"));
+</script>
+
+
+</html>

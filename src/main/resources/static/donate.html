@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ABS Sample Rest Call App</title>
+  
+  <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <link href="navBar_style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="topnav">
+        <a  href="Homepage.html">Home</a>
+        <a  href="updatePassword.html">Update Password</a>
+        <a  href="monetTransfer.html">Transfer</a>
+        <a  href="addPayee.html">Add Payee</a>
+        <a href="transferHistory.html">Transfer History</a>
+        <a class="active" href="#donate.html">Donate</a>
+      </div>
+
+  <h1>
+Welcome Mr. <label id="loggedInUser"></label> to Dummy Bank
+<p>
+Your current balance is <label id="accountBalance"></label> Rs.
+</p>
+
+</h1>
+
+<div id="root">
+<b><h2>Make A Donation </h2></b>
+<br><br>
+<p>
+<label for="psw">
+    <b>Donation </b>
+  </label>
+  <input type="text" placeholder="Enter Donation Amount" name="amt" id="amt">
+
+  <label for="psw">
+      <b>  towards Pradhan Mantri Relied Fund.</b>
+    </label>
+    
+<br>
+  <button type="submit" class="Login" onclick="donate();">Donate</button>
+</p>
+</div>
+</body>
+
+<script src="fetchUserDetails.js"></script>
+<script src="fetchCookie.js"></script>
+<script src="donate.js"></script>
+<script>
+//document.getElementById('loggedInUser').innerHTML =localStorage.getItem("loggedInUser");
+alert("cookie-",getLoggedInUser());
+document.getElementById('loggedInUser').innerHTML =getLoggedInUser();
+
+  //alert(localStorage.getItem("loggedInUser"));
+</script>
+ 
+
+</html>

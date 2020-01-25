@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Welcome to Dummy Bank</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <link href="navBar_style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div class="topnav">
+    <a class="active" href="#home">Home</a>
+    <a href="updatePassword.html">Update Password</a>
+    <a href="monetTransfer.html">Transfer</a>
+    <a href="addPayee.html">Add Payee</a>
+    <a href="transferHistory.html">Transfer History</a>
+    <a href="donate.html">Donate</a>
+  </div>
+
+  <h1>
+    Welcome Mr.
+    <label id="loggedInUser"></label> to Dummy Bank
+    <p>
+      Your current balance is
+      <label id="accountBalance"></label> Rs.
+    </p>
+
+  </h1>
+  Account Summary:
+<div id="summary" class="card">
+Customer ID:  <label id="cid"></label><br>
+Current Balance: <label id="balance"></label><br>
+Account ID : <label id="accountId"></label><br>
+</div>
+
+</body>
+
+<script src="fetchUserDetails.js"></script>
+<script src="fetchCookie.js"></script>
+<script>
+  //document.getElementById('loggedInUser').innerHTML =localStorage.getItem("loggedInUser");
+  //alert("cookie-", getLoggedInUser());
+  document.getElementById('loggedInUser').innerHTML = getLoggedInUser();
+
+  window.onload = function () {
+    //alert("Homepage loaded");
+    getAccountDetails();
+  }
+  //alert(localStorage.getItem("loggedInUser"));
+</script>
+
+
+</html>

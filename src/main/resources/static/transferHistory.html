@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ABS Sample Rest Call App</title>
+  
+  <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+  <link href="navBar_style.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="topnav">
+        <a  href="Homepage.html">Home</a>
+        <a  href="updatePassword.html">Update Password</a>
+        <a  href="monetTransfer.html">Transfer</a>
+        <a  href="addPayee.html">Add Payee</a>
+        <a  class="active"href="#transferHistory.html">Transfer History</a>
+        <a href="donate.html">Donate</a>
+      </div>
+
+  <h1>
+Welcome Mr. <label id="loggedInUser"></label> to Dummy Bank
+<p>
+Your current balance is <label id="accountBalance"></label> Rs.
+</p>
+
+</h1>
+<div id="root">
+<b>Fund Transfer History </b>
+<br><br>
+<p>
+<label for="psw" id="cid">
+    <b>Customer Account ID</b>
+  </label>
+  <input type="text" placeholder="Enter Account Holder ID" name="account" id="account">
+</p>
+<p>
+  <label for="psw">
+      <b>Account Holder Name</b>
+    </label>
+    <input type="text" placeholder="Enter Account Holder Name" name="name" id="name">
+
+<div id='transferHistory'>
+
+
+</div>
+
+
+
+
+<br>
+  <button type="submit" class="Login" onclick="getfundTransferHistory();">Search</button>
+</p>
+</div>
+</body>
+
+<script src="transferHistory.js"></script>
+<script src="fetchCookie.js"></script>
+<script>
+//document.getElementById('loggedInUser').innerHTML =localStorage.getItem("loggedInUser");
+alert("cookie-",getLoggedInUser());
+document.getElementById('loggedInUser').innerHTML =getLoggedInUser();
+
+window.onload = function () {
+    //alert("Homepage loaded");
+    getfundTransferHistory();
+  }
+
+
+  //alert(localStorage.getItem("loggedInUser"));
+</script>
+ 
+
+</html>

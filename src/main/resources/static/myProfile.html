@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ABS Sample Rest Call App</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+
+</head>
+
+<body>
+  <h1>
+    Welcome Mr.
+    <label id="loggedInUser"></label> to Dummy Bank
+  </h1>
+  <div>
+    <a href="updatePassword.html" class="card greenCard">Update Password</a>
+    <a href="monetTransfer.html" class="card greenCard">Transfer Money</a>
+    <a href="donate.html" class="card greenCard">Make Donations</a>
+  </div>
+
+</body>
+
+<script>
+  document.getElementById('loggedInUser').innerHTML = localStorage.getItem("loggedInUser");
+
+  //alert(localStorage.getItem("loggedInUser"));
+</script>
+<script src="fetchUserDetails.js"></script>
+
+</html>
