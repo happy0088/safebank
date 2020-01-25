@@ -24,7 +24,8 @@ alert(payee);
       // <input type="radio" name="favorite_pet" value="Birds">Birds<br>
 
       const h1 = document.createElement('h1');
-      h1.textContent = "Amount transferred to "+payee;
+      h1.textContent = amount+" Rs. successfully transferred to "+payee;
+      document.getElementById('accountBalance').innerHTML = data.balance;
       app.appendChild(h1);
     } else {
       alert("Error while fetching users details");

@@ -1,9 +1,6 @@
 package com.absonworld.mySpringBootRestApp.controller;
 
-import com.absonworld.mySpringBootRestApp.entity.AccountDetails;
-import com.absonworld.mySpringBootRestApp.entity.Beneficiary;
-import com.absonworld.mySpringBootRestApp.entity.Transactions;
-import com.absonworld.mySpringBootRestApp.entity.User;
+import com.absonworld.mySpringBootRestApp.entity.*;
 import com.absonworld.mySpringBootRestApp.service.H2JDBCService;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,20 +40,28 @@ public class UserController {
     }
 
     @PostMapping(path = "/validate", consumes = "application/json", produces = "application/json")
-    public AccountDetails validate(@RequestBody User userRequest) throws JSONException {
+    public UserSessionDetails validate(@RequestBody User userRequest) throws JSONException {
         System.out.println("UserName is " + userRequest);
+        UserSessionDetails userSessionDetails =null;
         //String userName = (String) userRequest.get("user").getAsString();
         User user = service.getUserDetails(userRequest.getUserName());
         if (null != user) {
+            String sessionId = service.createSession(user.getCid());
             AccountDetails account = service.getAccountDetails(user.getCid());
-            return account;
+            service.printTableData("SESSION");
+            userSessionDetails= new UserSessionDetails();
+            userSessionDetails.setBalance(account.getBalance());
+            userSessionDetails.setCid(account.getCid());
+            userSessionDetails.setSessionId(sessionId);
+            return userSessionDetails;
         }
         return null;
     }
 
     @PostMapping(path = "/getAccountDetails", consumes = "application/json", produces = "application/json")
-    public AccountDetails getAccountDetails(@RequestBody int cid) {
+    public AccountDetails getAccountDetails(@CookieValue(name = "sessionId") String sessionId,@RequestBody int cid) {
         System.out.println("Customer Id is " + cid);
+        System.out.println("SEssion Id is " + sessionId);
         AccountDetails account = service.getAccountDetails(cid);
         return account;
 
@@ -66,7 +71,7 @@ public class UserController {
     @PostMapping(path = "/addPayee", consumes = "application/json", produces = "application/json")
     public List<Beneficiary> addPayee(@RequestBody Beneficiary beneficiaryDetails) {
         System.out.println("Payee is " + beneficiaryDetails.getPayeeName());
-        AccountDetails accountDetails = getAccountDetails(beneficiaryDetails.getCid());
+        AccountDetails accountDetails = getAccountDetails("",beneficiaryDetails.getCid());
         beneficiaryDetails.setAccountId(accountDetails.getAccountId());
         int rows = service.addPayee(beneficiaryDetails);
         if (rows > 0) {
@@ -88,6 +93,12 @@ public class UserController {
     public List<Transactions> getfundTransferHistory(@RequestBody int cid) {
         System.out.println("User is " + cid);
         return service.getTransactionDetails(cid);
+    }
+
+    @PostMapping(path = "/getfundTransferHistoryByName", consumes = "application/json", produces = "application/json")
+    public List<Transactions> getfundTransferHistoryByName(@RequestBody Beneficiary beneficiary) {
+        System.out.println("User is " + beneficiary.getPayeeName());
+        return service.getTransactionDetailsByName(beneficiary.getPayeeName());
     }
 
     public User updatePasswordSimple(@RequestBody User user) {
@@ -137,7 +148,7 @@ public class UserController {
 
     }
 
-    @PostMapping(path = "/donate", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(path = "/donate", consumes = "application/json", produces = "application/json")
     public AccountDetails donate(@RequestBody Transactions donationDetail) throws InterruptedException {
         System.out.println("UserName is " + donationDetail.getCid());
 
@@ -146,13 +157,19 @@ public class UserController {
         int updatedAmount = accountDetails.getBalance() - donationDetail.getAmount();
         //intentional delay for 10000 ms .
         System.out.println("Going to Sleep for 10000 ms");
-        Thread.sleep(10000);
+        Thread.sleep(20000);
         System.out.println("Back to Work!!");
         int rows = service.updateAccountBalance(updatedAmount, donationDetail.getCid());
 
         accountDetails = service.getAccountDetails(donationDetail.getCid());
         return accountDetails;
 
+    }
+
+    @PostMapping(path = "/getcustmerDetails", consumes = "application/json", produces = "application/json")
+    public List<User> getcustmerDetails() {
+        System.out.println("Fetching All user details");
+        return service.getAllUserDetails();
     }
 
 }

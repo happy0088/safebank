@@ -31,21 +31,11 @@ Your current balance is <label id="accountBalance"></label> Rs.
 
 </h1>
 <div id="root">
-<b>Fund Transfer History </b>
+<b>Customer Details </b>
 <br><br>
 <p>
-<label for="psw" id="cid">
-    <b>Customer Account ID</b>
-  </label>
-  <input type="text" placeholder="Enter Account Holder ID" name="account" id="account">
-</p>
-<p>
-  <label for="payeeName">
-      <b>Account Holder Name</b>
-    </label>
-    <input type="text" placeholder="Enter Account Holder Name" name="payeeName" id="payeeName">
 
-<div id='transferHistory'>
+<div id='custmerDetails'>
 
 
 </div>
@@ -54,12 +44,12 @@ Your current balance is <label id="accountBalance"></label> Rs.
 
 
 <br>
-  <button type="submit" class="Login" onclick="getfundTransferHistory();">Search</button>
+  <button type="submit" class="Login" onclick="getcustmerDetails();">Search</button>
 </p>
 </div>
 </body>
 
-<script src="transferHistory.js"></script>
+<script src="customerCare.js"></script>
 <script src="fetchCookie.js"></script>
 <script>
 //document.getElementById('loggedInUser').innerHTML =localStorage.getItem("loggedInUser");
@@ -68,7 +58,7 @@ document.getElementById('loggedInUser').innerHTML =getLoggedInUser();
 
 window.onload = function () {
     //alert("Homepage loaded");
-    getfundTransferHistory();
+    getcustmerDetails();
   }
 
 

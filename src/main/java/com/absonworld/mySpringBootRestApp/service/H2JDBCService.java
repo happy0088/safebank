@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class H2JDBCService {
@@ -121,6 +122,9 @@ public class H2JDBCService {
         sql = "INSERT INTO TRANSACTIONS(cid,amount,accountId,payeeAccountId) " + "VALUES (10001,100,1234001,'5555001')";
         stmt.executeUpdate(sql);
 
+        sql = "INSERT INTO TRANSACTIONS(cid,amount,accountId,payeeAccountId) " + "VALUES (10001,200,1234001,'5555002')";
+        stmt.executeUpdate(sql);
+
         System.out.println("Inserted records into the table...");
     }
 
@@ -176,6 +180,11 @@ public class H2JDBCService {
                     " payeeName VARCHAR(255), " +
                     " PRIMARY KEY ( accountId,payeeAccountId ))";
             stmt.executeUpdate(sql);
+            sql = "CREATE TABLE if not exists  SESSION " +
+                    "(cid INTEGER, " +
+                    " sessionId VARCHAR(255), " +
+                    " PRIMARY KEY ( sessionId,cid ))";
+            stmt.executeUpdate(sql);
 
 
             System.out.println("Created table in given database...");
@@ -202,6 +211,8 @@ public class H2JDBCService {
             sql = "Drop TABLE  TRANSACTIONS ";
             stmt.executeUpdate(sql);
 
+            sql = "Drop TABLE  SESSION ";
+            stmt.executeUpdate(sql);
 
             System.out.println("Dropped table in given database...");
         } catch (SQLException e) {
@@ -376,5 +387,130 @@ public class H2JDBCService {
         }
         return 0;
 
+    }
+
+    public String createSession(int cid) {
+        String sessionId=createSessionId(cid);
+        int status=0;
+        try {
+            stmt = conn.createStatement();
+            String sql = "INSERT INTO SESSION(sessionId,cid) VALUES (\'" + sessionId + "\', " + cid +")";
+            status= stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(status>0){
+            return sessionId;
+        }
+
+        return null;
+    }
+
+    public String fetchSession(int cid) {
+        List<Transactions> transactionsList = new ArrayList<>();
+        String sql = "SELECT sessionId FROM SESSION where cid = " + cid;
+        ResultSet rs = null;
+        String sessionId=null;
+        try {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            // STEP 4: Extract data from result set
+            while (rs.next()) {
+                sessionId= rs.getString("sessionId");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        printTableData("SESSION");
+        return sessionId;
+    }
+
+
+    private String createSessionId(int cid) {
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+        System.out.println(generatedString);
+        return generatedString;
+    }
+
+    public boolean validateSession(String sessionId) {
+        List<Transactions> transactionsList = new ArrayList<>();
+        String sql = "SELECT sessionId FROM SESSION where sessionId = " + sessionId;
+        ResultSet rs = null;
+        try {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            // STEP 4: Extract data from result set
+            while (rs.next()) {
+                //sessionId= rs.getString("sessionId");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        printTableData("SESSION");
+        return false;
+    }
+
+    public List<User> getAllUserDetails() {
+
+        printTableData("USER");
+        List<User> userList = new ArrayList<>();
+        String sql = "SELECT * FROM USER ";
+        ResultSet rs = null;
+        try {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            // STEP 4: Extract data from result set
+            //if (rs.getFetchSize() > 0)
+            {
+                while (rs.next()) {
+                    User user = new User();
+                    // Retrieve by column name
+                    user.setCid(rs.getInt("cid"));
+                    user.setFullName(rs.getString("fullName"));
+                    user.setUserName(rs.getString("userName"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPassword(rs.getString("password"));
+                    userList.add(user);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
+    public List<Transactions> getTransactionDetailsByName(String payeeName) {
+
+        List<Transactions> transactionsList = new ArrayList<>();
+        String sql = "SELECT t.cid, t.amount, t.payeeAccountId, t.accountId FROM TRANSACTIONS as t " +
+                "join BENEFICIARY as b on t.payeeAccountId = b.payeeAccountId  where b.payeeName  =  \'" + payeeName+"\'";
+        ResultSet rs = null;
+        try {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+            // STEP 4: Extract data from result set
+            while (rs.next()) {
+                Transactions transactions = new Transactions();
+                // Retrieve by column name
+                transactions.setAccountId(rs.getInt("accountId"));
+                transactions.setPayeeAccountId(rs.getInt("payeeAccountId"));
+                transactions.setAmount(rs.getInt("amount"));
+                transactions.setCid(rs.getInt("cid"));
+                transactionsList.add(transactions);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        printTableData("TRANSACTIONS");
+        return transactionsList;
     }
 }

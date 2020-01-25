@@ -75,9 +75,10 @@ function validateLogin() {
       // alert("setting loggedInUser=",user);
       document.cookie = " loggedInUser=" + user + "; expires = Thu, 01 Jan 2050 00:00:00 GMT;path=/";
       document.cookie = " cid=" + data.cid + "; expires = Thu, 01 Jan 2050 00:00:00 GMT;path=/";
+      document.cookie = " sessionId=" + data.sessionId + "; expires = Thu, 01 Jan 2050 00:00:00 GMT;path=/";
       //document.cookie = "loggedInUser="+user+";";
-      localStorage.setItem("loggedInUser", user);
-      localStorage.setItem("balance", data.balance);
+      // localStorage.setItem("loggedInUser", user);
+      // localStorage.setItem("balance", data.balance);
       window.location = "Homepage.html";
     } else {
       alert("Error while fetching users details");
