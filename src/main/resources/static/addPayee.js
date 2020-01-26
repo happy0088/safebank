@@ -22,7 +22,7 @@
      // alert("setting loggedInUser=",user);
      //document.cookie = "loggedInUserHappy=; username=; loggedInUser=; expires = Thu, 01 Jan 1970 00:00:00 GMT";
      const h1 = document.createElement('h1');
-      h1.textContent = "Benificiary with A/C Name will be added within 24 hours";
+      h1.textContent = "Benificiary with A/C: "+account +" and Name: "+payeeName +" will be added within 24 hours";
       app.appendChild(h1);
       } else {
         alert("Error while fetching users details");
