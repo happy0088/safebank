@@ -44,7 +44,7 @@ public class UserController {
         System.out.println("UserName is " + userRequest);
         UserSessionDetails userSessionDetails =null;
         //String userName = (String) userRequest.get("user").getAsString();
-        User user = service.getUserDetails(userRequest.getUserName());
+        User user = service.getUserDetails(userRequest.getUserName(), userRequest.getPassword());
         if (null != user) {
             String sessionId = service.createSession(user.getCid());
             AccountDetails account = service.getAccountDetails(user.getCid());

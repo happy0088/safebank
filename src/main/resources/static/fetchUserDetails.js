@@ -62,6 +62,7 @@ function saveUser() {
 function validateLogin() {
   alert("validate login calld");
   var user = document.getElementById("userName").value;
+  var password = document.getElementById("password").value;
   var request = new XMLHttpRequest();
   request.open('POST', 'http://localhost:8080/api/v1/validate', true);
   request.setRequestHeader("Content-Type", "application/json");
@@ -86,7 +87,7 @@ function validateLogin() {
   }
   alert(user);
  // var obj = '{      "name" :'+ user+'      }';
-  var obj={'userName':user}; 
+  var obj={'userName':user,'password':password}; 
   request.send(JSON.stringify(obj));
 }
 

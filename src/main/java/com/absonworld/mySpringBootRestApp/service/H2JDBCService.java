@@ -116,13 +116,20 @@ public class H2JDBCService {
         sql = "INSERT INTO ACCOUNT(cid,balance,accountId) " + "VALUES (10002,3000,1234002)";
         stmt.executeUpdate(sql);
 
-        sql = "INSERT INTO BENEFICIARY(cid,accountId,payeeAccountId,payeeName) " + "VALUES (10001,1234001,'5555001','gogo')";
+        sql = "INSERT INTO BENEFICIARY(cid,accountId,payeeAccountId,payeeName) " + "VALUES (10011,1234011,'5555001','gogo')";
         stmt.executeUpdate(sql);
+
+        sql = "INSERT INTO BENEFICIARY(cid,accountId,payeeAccountId,payeeName) " + "VALUES (10012,1234011,'5555002','gogi')";
+        stmt.executeUpdate(sql);
+
 
         sql = "INSERT INTO TRANSACTIONS(cid,amount,accountId,payeeAccountId) " + "VALUES (10001,100,1234001,'5555001')";
         stmt.executeUpdate(sql);
 
         sql = "INSERT INTO TRANSACTIONS(cid,amount,accountId,payeeAccountId) " + "VALUES (10001,200,1234001,'5555002')";
+        stmt.executeUpdate(sql);
+
+        sql = "INSERT INTO TRANSACTIONS(cid,amount,accountId,payeeAccountId) " + "VALUES (10002,300,1234002,'5555002')";
         stmt.executeUpdate(sql);
 
         System.out.println("Inserted records into the table...");
@@ -246,10 +253,10 @@ public class H2JDBCService {
         return 0;
     }
 
-    public User getUserDetails(String userName) {
+    public User getUserDetails(String userName, String password) {
         printTableData("USER");
         User user = null;
-        String sql = "SELECT * FROM USER where userName = \'" + userName + "\'";
+        String sql = "SELECT * FROM USER where userName = \'" + userName + "\' and password = \'" + password + "\'";
         // String sql = "SELECT * FROM USER where userName ='Happy'";
         ResultSet rs = null;
         try {
