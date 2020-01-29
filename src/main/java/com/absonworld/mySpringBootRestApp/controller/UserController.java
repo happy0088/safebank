@@ -23,7 +23,7 @@ public class UserController {
      * @return the list
      */
     @GetMapping("/users")
-    public List<String> getAllUsers() {
+    public List<String> getAllUsers(@CookieValue(name = "sessionId") String sessionId) {
         List<String> userList = new ArrayList<>();
         userList.add("Abhishek");
         userList.add("happy");
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/saveUser", consumes = "application/json", produces = "application/json")
-    public int saveUser(@RequestBody User userDetails) {
+    public int saveUser(@CookieValue(name = "sessionId") String sessionId,@RequestBody User userDetails) {
         int status = service.createUser(userDetails);
         service.printTableData("USER");
         return status;
@@ -40,19 +40,19 @@ public class UserController {
     }
 
     @PostMapping(path = "/validate", consumes = "application/json", produces = "application/json")
-    public UserSessionDetails validate(@RequestBody User userRequest) throws JSONException {
+    public UserSessionDetails validate(@CookieValue(name = "sessionId") String sessionId,@RequestBody User userRequest) throws JSONException {
         System.out.println("UserName is " + userRequest);
         UserSessionDetails userSessionDetails =null;
         //String userName = (String) userRequest.get("user").getAsString();
         User user = service.getUserDetails(userRequest.getUserName(), userRequest.getPassword());
         if (null != user) {
-            String sessionId = service.createSession(user.getCid());
+            String sessionId1 = service.createSession(user.getCid());
             AccountDetails account = service.getAccountDetails(user.getCid());
             service.printTableData("SESSION");
             userSessionDetails= new UserSessionDetails();
             userSessionDetails.setBalance(account.getBalance());
             userSessionDetails.setCid(account.getCid());
-            userSessionDetails.setSessionId(sessionId);
+            userSessionDetails.setSessionId(sessionId1);
             return userSessionDetails;
         }
         return null;
@@ -69,7 +69,7 @@ public class UserController {
 
 
     @PostMapping(path = "/addPayee", consumes = "application/json", produces = "application/json")
-    public List<Beneficiary> addPayee(@RequestBody Beneficiary beneficiaryDetails) {
+    public List<Beneficiary> addPayee(@CookieValue(name = "sessionId") String sessionId,@RequestBody Beneficiary beneficiaryDetails) {
         System.out.println("Payee is " + beneficiaryDetails.getPayeeName());
         AccountDetails accountDetails = getAccountDetails("",beneficiaryDetails.getCid());
         beneficiaryDetails.setAccountId(accountDetails.getAccountId());
@@ -84,19 +84,19 @@ public class UserController {
     }
 
     @PostMapping(path = "/fetchPayeeList", consumes = "application/json", produces = "application/json")
-    public List<Beneficiary> fetchPayeeList(@RequestBody int cid) {
+    public List<Beneficiary> fetchPayeeList(@CookieValue(name = "sessionId") String sessionId,@RequestBody int cid) {
         System.out.println("customer is " + cid);
         return service.getBeneficiaryDetails(cid);
     }
 
     @PostMapping(path = "/getfundTransferHistory", consumes = "application/json", produces = "application/json")
-    public List<Transactions> getfundTransferHistory(@RequestBody int cid) {
+    public List<Transactions> getfundTransferHistory(@CookieValue(name = "sessionId") String sessionId,@RequestBody int cid) {
         System.out.println("User is " + cid);
         return service.getTransactionDetails(cid);
     }
 
     @PostMapping(path = "/getfundTransferHistoryByName", consumes = "application/json", produces = "application/json")
-    public List<Transactions> getfundTransferHistoryByName(@RequestBody Beneficiary beneficiary) {
+    public List<Transactions> getfundTransferHistoryByName(@CookieValue(name = "sessionId") String sessionId,@RequestBody Beneficiary beneficiary) {
         System.out.println("User is " + beneficiary.getPayeeName());
         return service.getTransactionDetailsByName(beneficiary.getPayeeName());
     }
@@ -112,7 +112,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/updatePassword", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public String updatePassword(@RequestBody String user) {
+    public String updatePassword(@CookieValue(name = "sessionId") String sessionId,@RequestBody String user) {
         User userDetails= new User();
         System.out.println("UserName is " + user);
         StringTokenizer st = new StringTokenizer(user,"&");
@@ -137,7 +137,7 @@ public class UserController {
 
 
     @PostMapping(path = "/transferFunds", consumes = "application/json", produces = "application/json")
-    public AccountDetails transferFunds(@RequestBody Transactions transferDetail) throws InterruptedException {
+    public AccountDetails transferFunds(@CookieValue(name = "sessionId") String sessionId,@RequestBody Transactions transferDetail) throws InterruptedException {
         System.out.println("UserName is " + transferDetail.getCid());
         AccountDetails accountDetails = service.getAccountDetails(transferDetail.getCid());
         int updatedAmount = accountDetails.getBalance() - transferDetail.getAmount();
@@ -149,7 +149,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/donate", consumes = "application/json", produces = "application/json")
-    public AccountDetails donate(@RequestBody Transactions donationDetail) throws InterruptedException {
+    public AccountDetails donate(@CookieValue(name = "sessionId") String sessionId,@RequestBody Transactions donationDetail) throws InterruptedException {
         System.out.println("UserName is " + donationDetail.getCid());
 
         AccountDetails accountDetails = service.getAccountDetails(donationDetail.getCid());
@@ -167,7 +167,7 @@ public class UserController {
     }
 
     @PostMapping(path = "/getcustmerDetails", consumes = "application/json", produces = "application/json")
-    public List<User> getcustmerDetails() {
+    public List<User> getcustmerDetails(@CookieValue(name = "sessionId") String sessionId) {
         System.out.println("Fetching All user details");
         return service.getAllUserDetails();
     }

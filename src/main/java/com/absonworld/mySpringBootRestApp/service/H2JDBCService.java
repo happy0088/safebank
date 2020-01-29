@@ -448,7 +448,7 @@ public class H2JDBCService {
 
     public boolean validateSession(String sessionId) {
         List<Transactions> transactionsList = new ArrayList<>();
-        String sql = "SELECT sessionId FROM SESSION where sessionId = " + sessionId;
+        String sql = "SELECT sessionId FROM SESSION where sessionId = \'" + sessionId+"\'";
         ResultSet rs = null;
         try {
             stmt = conn.createStatement();
