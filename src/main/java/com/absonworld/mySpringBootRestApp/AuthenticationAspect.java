@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 
  import javax.ws.rs.NotAuthorizedException;
-
 @Component
 @Aspect
 public class AuthenticationAspect {
@@ -21,7 +20,7 @@ public class AuthenticationAspect {
         System.out.println( "SessionId:"+sessionId);
         System.out.println("Authentication Happening here for session :");
 
-        if(!jp.getSignature().getName().contains("validate")) {
+        if(!(jp.getSignature().getName().contains("validate")|| jp.getSignature().getName().contains("saveUser"))) {
             boolean isValidSession = service.validateSession(sessionId);
             System.out.println("isValidSession: " + isValidSession);
             if (!isValidSession) {

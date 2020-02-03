@@ -53,7 +53,7 @@ function saveUser() {
   }
   var obj = { 'userName' : userName , 'fullName' :fullName ,'email' :email ,'password' : password };
   //var obj={'userName':user}; 
-  alert(obj);
+  alert(JSON.stringify(obj));
   request.send(JSON.stringify(obj));
 }
 

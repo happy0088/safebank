@@ -2,11 +2,16 @@ package com.absonworld.mySpringBootRestApp.controller;
 
 import com.absonworld.mySpringBootRestApp.entity.*;
 import com.absonworld.mySpringBootRestApp.service.H2JDBCService;
+import com.absonworld.mySpringBootRestApp.util.Common;
+import com.absonworld.mySpringBootRestApp.util.sendMailService;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -16,6 +21,12 @@ import java.util.StringTokenizer;
 public class UserController {
     @Autowired
     private H2JDBCService service;
+
+
+    private sendMailService mailService = new sendMailService();
+
+
+    private Common commonUtils = new Common();
 
     /**
      * Get all users list.
@@ -32,7 +43,8 @@ public class UserController {
     }
 
     @PostMapping(path = "/saveUser", consumes = "application/json", produces = "application/json")
-    public int saveUser(@CookieValue(name = "sessionId") String sessionId,@RequestBody User userDetails) {
+    public int saveUser(@RequestBody User userDetails) {
+        boolean isMailSent = mailService.sendMail(commonUtils.getMD5(userDetails.getUserName() + userDetails.getFullName() + userDetails.getEmail()));
         int status = service.createUser(userDetails);
         service.printTableData("USER");
         return status;

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
-
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
 <head>
     <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
   <link href="sign_style.css" rel="stylesheet">
 
 </head>
+
 
 <body>
 
@@ -34,7 +36,8 @@
 
   <div id="id01" class="modal">
     <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-    <form class="modal-content" onsubmit="saveUser();">
+    <div class="modal-content" >
+        <!-- <form class="modal-content" action="saveUser();" accept-charset=utf-8> -->
       <div class="container">
         <h1>Sign Up</h1>
         <p>Please fill in this form to create an account.</p>
@@ -67,10 +70,10 @@
 
         <div class="clearfix">
           <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-          <button type="submit" class="signupbtn">Sign Up</button>
+          <button type="submit" class="signupbtn" onclick="saveUser();">Sign Up</button>
         </div>
       </div>
-    </form>
+    </div>
   </div>
 
   <script>
