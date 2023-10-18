@@ -22,3 +22,13 @@ Please Note :
   b)	There might be many other ways to resolve these issues . We have just tried to solve it by one of the way .
 
 We would really love to have contributions from various other minds , so that we can make this application focus on more vulnerabilities.
+
+Issues:
+1. cookie - sql injection
+2. account balance - idor - change empId and can find others acc balance
+3. payment - -ve amount insert - logical bug
+4. donation - race condition
+5. Beneficiaries add - xss - if u put js in name of benificies then js will be executed .  js - ajax call to send cookie details
+6. brute force - login - captcha
+7. session token - only md5 hash of userId.
+   
